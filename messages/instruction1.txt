@@ -1,0 +1,20 @@
+﻿INSTRUKCJA 
+
+Twoim zadaniem będzie odnajdywanie analogii między dwiema parami obiektów według zasady: 
+Obiekt A ma się tak do obiektu B, jak obiekt C ma się do obiektu D. 
+Obiekty A, B i C zostaną Ci zaprezentowane w formie obrazkowej. 
+Twoim zadaniem będzie wskazanie obiektu D pośród możliwych odpowiedzi. 
+
+Na przykład:
+mleko (A) ma się tak do sera (B), jak mąka (C) do…
+Poprawną odpowiedzią jest chleb (D), ponieważ z mleka robi się ser, tak jak z mąki robi się chleb. 
+
+UWAGA: czasem więcej niż jedna odpowiedź może wydawać się poprawna. 
+Zawsze wybieraj odpowiedź, która Twoim zdaniem pasuje najlepiej.
+
+Na odpowiedź masz pół minuty. Pięć sekund przed końcem czasu na ekranie pojawi się symbol zegarka. 
+
+Za chwilę wykonasz dwa przykłady treningowe, a następnie przejdziesz do właściwej części zadania. 
+
+
+Kliknij spację, aby przejść do treningu.

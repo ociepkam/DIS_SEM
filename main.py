@@ -1,0 +1,106 @@
+import atexit
+import random
+from psychopy import visual, event, core, logging
+import time
+
+from os.path import join
+import csv
+
+from sources.experiment_info import experiment_info
+from sources.load_data import load_config, load_words, load_trials, load_training_trials
+from sources.screen import get_screen_res, get_frame_rate
+from sources.run_trial import run_trial
+from sources.show_info import show_info, show_image, read_text_from_file
+from sources.create_trails import create_experiment_trials, create_training_trials
+
+part_id, part_sex, part_age, date = experiment_info()
+NAME = "{}_{}_{}".format(part_id, part_sex[:1], part_age)
+
+RESULTS = list()
+RESULTS.append(['NR', 'TRAINING', 'N_ANSWERS', 'ACC', 'RT',
+                "CHOSEN_ANSWER_WORD", "CHOSEN_ANSWER_LENGTH", "CHOSEN_ANSWER_CATEGORY",
+                "TASK_WORD", "TASK_LENGTH", "TASK_CATEGORY",
+                "TARGET_WORD", "TARGET_LENGTH", "TARGET_CATEGORY",
+                "DISTRACTOR_WORD", "DISTRACTOR_LENGTH", "DISTRACTOR_CATEGORY",
+                "TASK_DISTRACTOR_DIFFERENCE", 'ANSWERS'])
+
+RAND = str(random.randint(100, 999))
+
+logging.LogFile(join('.', 'results', 'logging', NAME + '_' + RAND + '.log'), level=logging.INFO)
+
+
+@atexit.register
+def save_beh():
+    logging.flush()
+    with open(join('results', 'behavioral_data', 'beh_{}_{}.csv'.format(NAME, RAND)), 'w') as csvfile:
+        beh_writer = csv.writer(csvfile)
+        beh_writer.writerows(RESULTS)
+
+
+config = load_config()
+word_bank = load_words()
+
+SCREEN_RES = get_screen_res()
+win = visual.Window(SCREEN_RES, fullscr=True, monitor='testMonitor', units='pix', color=config["BACKGROUND_COLOR"])
+FRAMES_PER_SEC = get_frame_rate(win)
+
+clock_image = visual.ImageStim(win=win, image=join('images', 'clock.png'), interpolate=True,
+                               size=config['CLOCK_SIZE'], pos=config['CLOCK_POS'])
+
+fixation = visual.TextStim(win=win, height=config['FIXATION_SIZE'], alignHoriz='center',
+                           alignVert='center', font=u'Arial', pos=config["FIXATION_POS"],
+                           text=config["FIXATION_SYMBOL"], color=config["FIXATION_COLOR"])
+
+mouse = event.Mouse()
+
+response_clock = core.Clock()
+
+in_trial_instruction = None
+if config["SHOW_IN_TRIAL_INSTRUCTION"]:
+    in_trial_instruction = visual.TextStim(win=win, height=config['IN_TRIAL_INSTRUCTION_SIZE'], alignHoriz='center',
+                                           alignVert='center', font=u'Arial', pos=config["IN_TRIAL_INSTRUCTION_POS"],
+                                           text=read_text_from_file(join('.', 'messages', "in_trial_instruction.txt")),
+                                           wrapWidth=win.size[0], color=config["IN_TRIAL_INSTRUCTION_COLOR"])
+
+# TRAINING
+# show_info(win, join('.', 'messages', "instruction1.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
+show_image(win, "instruction_1.jpg", size=SCREEN_RES)
+training = True
+training_trials_info = load_training_trials()
+training_trials = create_training_trials(config, win, training_trials_info)
+for i, t in enumerate(training_trials):
+    chosen_answer, acc, rt = run_trial(trial=t, config=config, response_clock=response_clock, clock_image=clock_image,
+                                       mouse=mouse, win=win, instruction=in_trial_instruction, training=training,
+                                       training_trial_idx=i, fixation=fixation)
+    task_distractor_difference = t.info["distractor"]["length"] - t.info["task"]["length"] \
+        if t.info["distractor"]["word"] is not None else None
+
+    RESULTS.append([i, training, len(t.words), acc, rt,
+                    chosen_answer["word"], chosen_answer["length"], chosen_answer["category"],
+                    t.info["task"]["word"], t.info["task"]["length"], t.info["task"]["category"],
+                    t.info["target"]["word"], t.info["target"]["length"], t.info["target"]["category"],
+                    t.info["distractor"]["word"], t.info["distractor"]["length"], t.info["distractor"]["category"],
+                    task_distractor_difference, t.info["answers"]])
+
+# EXPERIMENT
+# show_info(win, join('.', 'messages', "instruction2.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
+show_image(win, "instruction_2.jpg", size=SCREEN_RES)
+training = False
+trials_info = load_trials()
+trials = create_experiment_trials(config=config, win=win, word_bank=word_bank, trials_info=trials_info)
+if config["SHUFFLE_TRIALS"]:
+    random.shuffle(trials)
+
+for i, t in enumerate(trials):
+    chosen_answer, acc, rt = run_trial(trial=t, config=config, response_clock=response_clock, clock_image=clock_image,
+                                       mouse=mouse, win=win, instruction=in_trial_instruction, training=training,
+                                       fixation=fixation)
+    task_distractor_difference = t.info["distractor"]["length"] - t.info["task"]["length"] \
+        if t.info["distractor"]["word"] is not None else None
+
+    RESULTS.append([i, training, len(t.words), acc, rt,
+                    chosen_answer["word"], chosen_answer["length"], chosen_answer["category"],
+                    t.info["task"]["word"], t.info["task"]["length"], t.info["task"]["category"],
+                    t.info["target"]["word"], t.info["target"]["length"], t.info["target"]["category"],
+                    t.info["distractor"]["word"], t.info["distractor"]["length"], t.info["distractor"]["category"],
+                    task_distractor_difference, t.info["answers"]])
