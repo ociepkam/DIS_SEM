@@ -107,6 +107,6 @@ class Trial:
         self.task.setAutoDraw(draw)
         for elem in self.words:
             elem.setAutoDraw(draw)
-        if self.show_frames:
+        if self.show_frames or not draw:
             for elem in self.frames:
                 elem.setAutoDraw(draw)
