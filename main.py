@@ -62,7 +62,7 @@ if config["SHOW_IN_TRIAL_INSTRUCTION"]:
                                            text=read_text_from_file(join('.', 'messages', "in_trial_instruction.txt")),
                                            wrapWidth=win.size[0], color=config["IN_TRIAL_INSTRUCTION_COLOR"])
 
-# TRAINING
+# TRAINING 1
 # show_info(win, join('.', 'messages', "instruction1.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
 show_image(win, "instruction_1.jpg", size=SCREEN_RES)
 training = True
@@ -82,7 +82,7 @@ for i, t in enumerate(training_trials):
                     t.info["distractor"]["word"], t.info["distractor"]["length"], t.info["distractor"]["category"],
                     task_distractor_difference, t.info["answers"]])
 
-# TRAINING
+# TRAINING 2
 # show_info(win, join('.', 'messages', "instruction1.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
 show_image(win, "instruction_1.jpg", size=SCREEN_RES)
 training = True
