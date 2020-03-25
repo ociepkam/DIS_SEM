@@ -39,10 +39,10 @@ def load_trials():
         raise Exception("Can't load trials.csv file")
 
 
-def load_training_trials():
+def load_training_trials(file_name):
     try:
-        with open(join("documents", "training_trials.yaml"), encoding='utf-8') as yaml_file:
+        with open(join("documents", file_name), encoding='utf-8') as yaml_file:
             doc = yaml.load(yaml_file)
         return doc
     except:
-        raise Exception("Can't load training_trials.yaml file")
+        raise Exception("Can't load {} file".format(file_name))

@@ -6,7 +6,7 @@ from sources.show_info import read_text_from_file
 from os.path import join
 
 
-def run_trial(trial, config, response_clock, clock_image, mouse, win, fixation,
+def run_trial(trial, config, response_clock, clock_image, mouse, win, fixation, stim_time,
               instruction=None, training=False, training_trial_idx=None):
     win.callOnFlip(response_clock.reset)
     win.flip()
@@ -25,7 +25,7 @@ def run_trial(trial, config, response_clock, clock_image, mouse, win, fixation,
     win.flip()
     event.clearEvents()
 
-    while response_clock.getTime() < config["STIM_TIME"] and acc == -1:
+    while response_clock.getTime() < stim_time and acc == -1:
         for idx, frame in enumerate(trial.frames):
             if mouse.isPressedIn(frame):
                 chosen_answer = trial.info["answers"][idx]
