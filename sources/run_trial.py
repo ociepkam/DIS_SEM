@@ -33,14 +33,17 @@ def run_trial(trial, config, response_clock, clock_image, mouse, win, fixation, 
                 rt = response_clock.getTime()
                 break
 
-        if not clock_is_shown and config["STIM_TIME"] - response_clock.getTime() < config["SHOW_CLOCK"]:
+        if clock_image is not None and \
+                not clock_is_shown and \
+                config["STIM_TIME"] - response_clock.getTime() < config["SHOW_CLOCK"]:
             clock_image.setAutoDraw(True)
             clock_is_shown = True
             win.flip()
 
         check_exit()
         win.flip()
-    clock_image.setAutoDraw(False)
+    if clock_image is not None:
+        clock_image.setAutoDraw(False)
     if training:
         feedback_file_name = "feedback_positive.txt" if acc == 1 else "feedback_negative.txt"
         text = read_text_from_file(join('.', 'messages', feedback_file_name)) + \

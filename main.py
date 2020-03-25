@@ -68,8 +68,9 @@ show_image(win, "instruction_1.jpg", size=SCREEN_RES)
 training = True
 training_trials_info = load_training_trials("training_1_trials.yaml")
 training_trials = create_training_trials(config, win, training_trials_info)
+train_clock = clock_image if config["SHOW_CLOCK_IN_TRAINING_1"] else None
 for i, t in enumerate(training_trials):
-    chosen_answer, acc, rt = run_trial(trial=t, config=config, response_clock=response_clock, clock_image=clock_image,
+    chosen_answer, acc, rt = run_trial(trial=t, config=config, response_clock=response_clock, clock_image=train_clock,
                                        fixation=fixation, win=win, instruction=in_trial_instruction, training=training,
                                        training_trial_idx=i, mouse=mouse, stim_time=config["STIM_TIME_TRAINING_1"])
     task_distractor_difference = t.info["distractor"]["length"] - t.info["task"]["length"] \
@@ -84,7 +85,7 @@ for i, t in enumerate(training_trials):
 
 # TRAINING 2
 # show_info(win, join('.', 'messages', "instruction1.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
-show_image(win, "instruction_1.jpg", size=SCREEN_RES)
+show_image(win, "instruction_2.jpg", size=SCREEN_RES)
 training = True
 training_trials_info = load_training_trials("training_2_trials.yaml")
 training_trials = create_training_trials(config, win, training_trials_info)
@@ -105,7 +106,7 @@ for i, t in enumerate(training_trials):
 
 # EXPERIMENT
 # show_info(win, join('.', 'messages', "instruction2.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
-show_image(win, "instruction_2.jpg", size=SCREEN_RES)
+show_image(win, "instruction_3.jpg", size=SCREEN_RES)
 training = False
 trials_info = load_trials()
 trials = create_experiment_trials(config=config, win=win, word_bank=word_bank, trials_info=trials_info)
