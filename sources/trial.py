@@ -11,12 +11,19 @@ class Trial:
         self.show_frames = False
 
     @staticmethod
-    def __choice_word(word_bank, length, category):
-        word = random.choice(list(word_bank[word_bank["LENGTH"] == length][category]))
-        return {"word": word, "length": length, "category": category}
+    def __choice_word(word_bank, length, category, used_words):
+        i = 0
+        while True:
+            word = random.choice(list(word_bank[word_bank["LENGTH"] == length][category]))
+            if word not in used_words:
+                return {"word": word, "length": length, "category": category}
+            i += 1
+            assert i < 100, "I can't find word in word_bank which was not used in last trials"
 
     def prepare_info(self, word_bank, n_answers, trial_with_distractor, distractor_length=None, task_length=None,
-                     task_category=None, target_category=None):
+                     task_category=None, target_category=None, used_words=None):
+        if used_words is None:
+            used_words = []
         all_categories = list(word_bank.columns)
         all_categories.remove("LENGTH")
         all_lengths = list(set(word_bank["LENGTH"]))
@@ -25,21 +32,21 @@ class Trial:
         if task_length is None:
             task_length = random.choice(all_lengths)
 
-        task = self.__choice_word(word_bank, task_length, task_category)
+        task = self.__choice_word(word_bank, task_length, task_category, used_words)
         all_lengths.remove(task_length)
         all_categories.remove(task_category)
 
         if target_category not in all_categories:
             target_category = random.choice([c for c in all_categories if c != task_category])
 
-        target = self.__choice_word(word_bank, task_length, target_category)
+        target = self.__choice_word(word_bank, task_length, target_category, used_words)
         all_categories.remove(target_category)
         answers = [target]
 
         if trial_with_distractor:
             if distractor_length is None:
                 distractor_length = random.choice([l for l in all_lengths if abs(l - task_length) == 1])
-            distractor = self.__choice_word(word_bank, distractor_length, task_category)
+            distractor = self.__choice_word(word_bank, distractor_length, task_category, used_words)
             all_lengths.remove(distractor_length)
             answers.append(distractor)
         else:
@@ -50,7 +57,7 @@ class Trial:
             all_lengths.remove(answer_length)
             answer_category = random.choice(all_categories)
             all_categories.remove(answer_category)
-            answers.append(self.__choice_word(word_bank, answer_length, answer_category))
+            answers.append(self.__choice_word(word_bank, answer_length, answer_category, used_words))
 
         random.shuffle(answers)
         info = {"task": task,
@@ -88,11 +95,11 @@ class Trial:
 
         words_length, extra_x_offsets = self.__calculate_extra_x_offsets(config, win)
         for idx, elem in enumerate(self.info["answers"]):
-            x = config["ANSWERS_POS"][0] - (((len(self.info["answers"]) - 1)/2 - idx) * config["ANSWERS_OFFSET"][0]) \
+            x = config["ANSWERS_POS"][0] - (((len(self.info["answers"]) - 1) / 2 - idx) * config["ANSWERS_OFFSET"][0]) \
                 + extra_x_offsets[idx]
-            y = config["ANSWERS_POS"][1] - (((len(self.info["answers"]) - 1)/2 - idx) * config["ANSWERS_OFFSET"][1])
+            y = config["ANSWERS_POS"][1] - (((len(self.info["answers"]) - 1) / 2 - idx) * config["ANSWERS_OFFSET"][1])
             word = visual.TextStim(win=win, font=u'Arial', text=elem["word"], height=config["ANSWER_SIZE"],
-                                   color=u'black',  pos=[x, y])
+                                   color=u'black', pos=[x, y])
 
             frame = visual.Rect(win, width=words_length[idx] + 40, height=config["ANSWER_SIZE"] + 10,
                                 pos=[x, y], lineColor=config["FRAME_COLOR"], lineWidth=config["FRAME_LINE"])

@@ -1,4 +1,5 @@
 SHUFFLE_TRIALS: TRUE
+N_BACK: 2 # do not repeat words from n last trials
 
 # visual
 BACKGROUND_COLOR: grey

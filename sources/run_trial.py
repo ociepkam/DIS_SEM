@@ -44,7 +44,7 @@ def run_trial(trial, config, response_clock, clock_image, mouse, win, fixation,
     if training:
         feedback_file_name = "feedback_positive.txt" if acc == 1 else "feedback_negative.txt"
         text = read_text_from_file(join('.', 'messages', feedback_file_name)) + \
-               read_text_from_file(join('.', 'messages', "feedback_info_0{}.txt".format(training_trial_idx+1)))
+               read_text_from_file(join('.', 'messages', "feedback_info_0{}.txt".format(training_trial_idx + 1)))
 
         feedback = visual.TextStim(win=win, height=config['FEEDBACK_SIZE'], alignHoriz='center', alignVert='center',
                                    font=u'Arial', pos=config["FEEDBACK_POS"], text=text, wrapWidth=win.size[0],
