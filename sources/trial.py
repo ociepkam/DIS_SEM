@@ -8,7 +8,6 @@ class Trial:
         self.words = None
         self.frames = None
         self.task = None
-        self.show_frames = False
 
     @staticmethod
     def __choice_word(word_bank, length, category, used_words):
@@ -38,7 +37,6 @@ class Trial:
 
         if target_category is None:
             target_category = random.choice([c for c in all_categories if c != task_category])
-
 
         target = self.__choice_word(word_bank, task_length, target_category, used_words)
 
@@ -109,12 +107,11 @@ class Trial:
         self.words = words
         self.frames = frames
         self.task = task
-        self.show_frames = config["SHOW_FRAMES"]
 
     def set_auto_draw(self, draw):
         self.task.setAutoDraw(draw)
         for elem in self.words:
             elem.setAutoDraw(draw)
-        if self.show_frames or not draw:
+        if not draw:
             for elem in self.frames:
                 elem.setAutoDraw(draw)

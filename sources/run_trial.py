@@ -27,6 +27,8 @@ def run_trial(trial, config, response_clock, clock_image, mouse, win, fixation, 
 
     while response_clock.getTime() < stim_time and acc == -1:
         for idx, frame in enumerate(trial.frames):
+            if frame.contains(mouse.getPos()) and config["SHOW_FRAMES"]:
+                frame.draw()
             if mouse.isPressedIn(frame):
                 chosen_answer = trial.info["answers"][idx]
                 acc = chosen_answer == trial.info["target"]
