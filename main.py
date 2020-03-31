@@ -1,7 +1,6 @@
 import atexit
 import random
 from psychopy import visual, event, core, logging
-import time
 
 from os.path import join
 import csv
@@ -64,7 +63,7 @@ if config["SHOW_IN_TRIAL_INSTRUCTION"]:
 
 # TRAINING 1
 # show_info(win, join('.', 'messages', "instruction1.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
-show_image(win, "instruction_1.jpg", size=SCREEN_RES)
+show_image(win, "instruction_1.jpg", size=config["INSTRUCTION_SIZE_TRAINING_1"])
 training = True
 training_trials_info = load_training_trials("training_1_trials.yaml")
 training_trials = create_training_trials(config, win, training_trials_info)
@@ -85,7 +84,7 @@ for i, t in enumerate(training_trials):
 
 # TRAINING 2
 # show_info(win, join('.', 'messages', "instruction1.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
-show_image(win, "instruction_2.jpg", size=SCREEN_RES)
+show_image(win, "instruction_2.jpg", size=config["INSTRUCTION_SIZE_TRAINING_2"])
 training = True
 training_trials_info = load_training_trials("training_2_trials.yaml")
 training_trials = create_training_trials(config, win, training_trials_info)
@@ -106,7 +105,7 @@ for i, t in enumerate(training_trials):
 
 # EXPERIMENT
 # show_info(win, join('.', 'messages', "instruction2.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
-show_image(win, "instruction_3.jpg", size=SCREEN_RES)
+show_image(win, "instruction_3.jpg", size=config["INSTRUCTION_SIZE_EXPERIMENT"])
 training = False
 trials_info = load_trials()
 trials = create_experiment_trials(config=config, win=win, word_bank=word_bank, trials_info=trials_info)
