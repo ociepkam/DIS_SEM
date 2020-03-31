@@ -18,7 +18,7 @@ class Trial:
             if word not in used_words:
                 return {"word": word, "length": length, "category": category}
             i += 1
-            assert i < 100, "I can't find word in word_bank which was not used in last trials"
+            assert i < 100, "I can't find word in word_bank which was not used in last trials. Category: " + category
 
     def prepare_info(self, word_bank, n_answers, trial_with_distractor, distractor_length=None, task_length=None,
                      task_category=None, target_category=None, used_words=None):
@@ -36,14 +36,15 @@ class Trial:
         all_lengths.remove(task_length)
         all_categories.remove(task_category)
 
-        if target_category not in all_categories:
+        if target_category is None:
             target_category = random.choice([c for c in all_categories if c != task_category])
 
+
         target = self.__choice_word(word_bank, task_length, target_category, used_words)
+
         all_categories.remove(target_category)
         answers = [target]
-
-        if trial_with_distractor:
+        if trial_with_distractor == "TRUE":
             if distractor_length is None:
                 distractor_length = random.choice([l for l in all_lengths if abs(l - task_length) == 1])
             distractor = self.__choice_word(word_bank, distractor_length, task_category, used_words)

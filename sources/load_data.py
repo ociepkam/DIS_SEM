@@ -6,7 +6,7 @@ import pandas as pd
 def load_config():
     try:
         with open(join("documents", "config.yaml")) as yaml_file:
-            doc = yaml.load(yaml_file)
+            doc = yaml.load(yaml_file, Loader=yaml.FullLoader)
         return doc
     except:
         raise Exception("Can't load config file")
@@ -42,7 +42,7 @@ def load_trials():
 def load_training_trials(file_name):
     try:
         with open(join("documents", file_name), encoding='utf-8') as yaml_file:
-            doc = yaml.load(yaml_file)
+            doc = yaml.load(yaml_file, Loader=yaml.FullLoader)
         return doc
     except:
         raise Exception("Can't load {} file".format(file_name))
