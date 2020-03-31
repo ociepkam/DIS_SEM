@@ -81,6 +81,7 @@ for i, t in enumerate(training_trials):
                     t.info["target"]["word"], t.info["target"]["length"], t.info["target"]["category"],
                     t.info["distractor"]["word"], t.info["distractor"]["length"], t.info["distractor"]["category"],
                     task_distractor_difference, t.info["answers"]])
+n_trails_training_1 = len(training_trials)
 
 # TRAINING 2
 # show_info(win, join('.', 'messages', "instruction1.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
@@ -91,7 +92,8 @@ training_trials = create_training_trials(config, win, training_trials_info)
 for i, t in enumerate(training_trials):
     chosen_answer, acc, rt = run_trial(trial=t, config=config, response_clock=response_clock, clock_image=clock_image,
                                        mouse=mouse, win=win, instruction=in_trial_instruction, training=training,
-                                       training_trial_idx=i, fixation=fixation, stim_time=config["STIM_TIME"])
+                                       training_trial_idx=i+n_trails_training_1, fixation=fixation,
+                                       stim_time=config["STIM_TIME"])
     task_distractor_difference = t.info["distractor"]["length"] - t.info["task"]["length"] \
         if t.info["distractor"]["word"] is not None else None
 
