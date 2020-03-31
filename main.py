@@ -129,3 +129,5 @@ for i, t in enumerate(trials):
                     t.info["target"]["word"], t.info["target"]["length"], t.info["target"]["category"],
                     t.info["distractor"]["word"], t.info["distractor"]["length"], t.info["distractor"]["category"],
                     task_distractor_difference, t.info["answers"]])
+
+show_info(win, join('.', 'messages', "end.txt"), text_size=config['TEXT_SIZE'], screen_width=SCREEN_RES[0])
