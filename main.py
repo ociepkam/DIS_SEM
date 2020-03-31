@@ -110,9 +110,11 @@ for i, t in enumerate(training_trials):
 show_image(win, "instruction_3.jpg", size=config["INSTRUCTION_SIZE_EXPERIMENT"])
 training = False
 trials_info = load_trials()
-trials = create_experiment_trials(config=config, win=win, word_bank=word_bank, trials_info=trials_info)
+
 if config["SHUFFLE_TRIALS"]:
-    random.shuffle(trials)
+    random.shuffle(trials_info)
+trials = create_experiment_trials(config=config, win=win, word_bank=word_bank, trials_info=trials_info)
+
 
 for i, t in enumerate(trials):
     chosen_answer, acc, rt = run_trial(trial=t, config=config, response_clock=response_clock, clock_image=clock_image,
