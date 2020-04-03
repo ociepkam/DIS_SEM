@@ -35,7 +35,7 @@ class Trial:
         all_lengths.remove(task_length)
         all_categories.remove(task_category)
 
-        if target_category is None:
+        if target_category not in all_categories:
             target_category = random.choice([c for c in all_categories if c != task_category])
 
         target = self.__choice_word(word_bank, task_length, target_category, used_words)

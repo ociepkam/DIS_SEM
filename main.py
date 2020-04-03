@@ -55,7 +55,7 @@ mouse = event.Mouse()
 response_clock = core.Clock()
 
 in_trial_instruction = None
-if config["SHOW_IN_TRIAL_INSTRUCTION"]:
+if config["SHOW_IN_TRIAL_INSTRUCTION"] == "TRUE":
     in_trial_instruction = visual.TextStim(win=win, height=config['IN_TRIAL_INSTRUCTION_SIZE'], alignHoriz='center',
                                            alignVert='center', font=u'Arial', pos=config["IN_TRIAL_INSTRUCTION_POS"],
                                            text=read_text_from_file(join('.', 'messages', "in_trial_instruction.txt")),
@@ -111,7 +111,7 @@ show_image(win, "instruction_3.jpg", size=config["INSTRUCTION_SIZE_EXPERIMENT"])
 training = False
 trials_info = load_trials()
 
-if config["SHUFFLE_TRIALS"]:
+if config["SHUFFLE_TRIALS"] == "TRUE":
     random.shuffle(trials_info)
 trials = create_experiment_trials(config=config, win=win, word_bank=word_bank, trials_info=trials_info)
 
